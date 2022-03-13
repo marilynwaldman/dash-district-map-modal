@@ -38,7 +38,7 @@ for map in maps:
     dict[map] = map
 dict['about'] = "About"
    
-dict['colorado_districtmap_1mar22'] = "District Map"
+dict['colorado_districtmap_1mar22'] = "Find Your District"
 
 application = dash.Dash(external_stylesheets=[dbc.themes.CERULEAN],prevent_initial_callbacks=True)
 
@@ -115,7 +115,7 @@ def toggle_navbar_collapse(n, is_open):
 address = html.Div(
     [
         html.H3(
-            "Enter your address and press ENTER:  ", className="lead"
+            "Enter your address, press return:  ", className="lead"
         ),
         dbc.Input(id="input", placeholder="ex: 17301 W Colfax Golden", size="md", className="mb-3", type="text",debounce=True),
 
@@ -180,11 +180,13 @@ def output_text(value):
 
     global modal
     
-    lat, lon, modal, district = extract_lat_long_via_address(value, GOOGLE_API_KEY)
+    msg, lat, lon, modal, district = extract_lat_long_via_address(value, GOOGLE_API_KEY)
     
     #districts = extract_lat_long_via_address(value, GOOGLE_API_KEY)
+    if lon is None:
+        return msg
     
-    return lat, lon, district, modal
+    return  district, modal
 
 #callback for sidebar button
 @application.callback(

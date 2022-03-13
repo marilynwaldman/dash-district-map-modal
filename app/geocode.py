@@ -9,11 +9,10 @@ from addressmapmodal import  popover, blank_popover
  
 
 def extract_lat_long_via_address(address_or_zipcode, GOOGLE_API_KEY):
-    print("in extract")
-
+    
     lat, lng = None, None
     if len(address_or_zipcode) < 1:
-        return "Please enter an address", None, blank_popover(), None
+        return "Please enter an address", None, None, blank_popover(), None
     
     api_key = GOOGLE_API_KEY
     base_url = "https://maps.googleapis.com/maps/api/geocode/json"
@@ -23,7 +22,7 @@ def extract_lat_long_via_address(address_or_zipcode, GOOGLE_API_KEY):
     
     if r.status_code not in range(200, 299):
         
-        return "address not found", None, blank_popover(), None
+        return "Address not found.  ", None, None, blank_popover(), None
     try:
         '''
         This try block incase any of our inputs are invalid. This is done instead
@@ -33,13 +32,13 @@ def extract_lat_long_via_address(address_or_zipcode, GOOGLE_API_KEY):
         lat = results['geometry']['location']['lat']
         lng = results['geometry']['location']['lng']
     except:
-        return "address not found.", None, blank_popover(), None
-        pass
+        return "Address not found.  ", None, None, blank_popover(), None
+        
 
     #districts = get_district(lat, lng)
     #county = get_county(lat, lon)
     #return get_district(lat, lng)
-    return "address found at: (" + str(lat)+","+str(lng)+").  " ,None, popover(lat,lng, address_or_zipcode), get_district(lat,lng)
+    return "Address found.  " ,lat, lng, popover(lat,lng, address_or_zipcode), get_district(lat,lng)
 
 
 def get_district(lat,lon):
@@ -49,7 +48,7 @@ def get_district(lat,lon):
     base_url = "https://zfa9qwmegs.us-west-2.awsapprunner.com/district"
     endpoint = f"{base_url}?lat={lat}&lon={lon}"
     r = requests.get(endpoint)
-    print(r.status_code)
+    
     
     if r.status_code not in range(200, 299):
         
@@ -60,7 +59,6 @@ def get_district(lat,lon):
         of actually writing out handlers for all kinds of responses.
         '''    
         results = r.json()
-        print(results)
     except:
         pass
 
@@ -70,9 +68,6 @@ def get_district(lat,lon):
     #    msg = results['msg']
 
     if len(results['district']) > 0:
-        print("districts found")
-        print(results['district'])
-        
         return "Your address is in Colorado Congressional " + results['district'][0] + ".  " 
     else:
         return "Colorado district not found, please verify your address.  "    

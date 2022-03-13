@@ -9,15 +9,12 @@ from sidebar_style import SIDEBAR_STYLE
 
 
 def make_map(lat,lon,address):
-    print(type(lat))
     d = {"latitude" : lat,
          "longitude" : lon,
         "address" : address
         }
     df = pd.DataFrame().append(d, ignore_index=True)        
     
-    print("df")
-    print(df)
     fig = go.Figure()
 
     fig = px.scatter_mapbox(
@@ -33,12 +30,12 @@ def make_map(lat,lon,address):
 
     fig.update_layout(mapbox_style="open-street-map") # adding beautiful street layout to map
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0}),
-    fig.update_traces(marker={'size': 20})
+    fig.update_traces(marker={'size': 10})
     return fig
 
 def popover(lat, lon, address):
     fig = make_map(lat, lon, address)
-    print("in popover")
+    
     modal = html.Div(
     [
         
