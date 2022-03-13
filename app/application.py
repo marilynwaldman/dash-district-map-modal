@@ -242,7 +242,7 @@ def toggle_active_links(pathname):
 
 @application.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def render_page_content(pathname):
-    if pathname in ["/"]:
+    if pathname in ["/","/colorado_districtmap_1mar22"]:
         #return html.P("IX Power Maps")
         mymap = "./app/static/colorado_districtmap_1mar22.html"
         return html.Div(
