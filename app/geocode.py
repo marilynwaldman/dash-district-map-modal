@@ -13,7 +13,7 @@ def extract_lat_long_via_address(address_or_zipcode, GOOGLE_API_KEY):
 
     lat, lng = None, None
     if len(address_or_zipcode) < 1:
-        return "Please enter an address", None, blank_popover()
+        return "Please enter an address", None, blank_popover(), None
     
     api_key = GOOGLE_API_KEY
     base_url = "https://maps.googleapis.com/maps/api/geocode/json"
@@ -23,7 +23,7 @@ def extract_lat_long_via_address(address_or_zipcode, GOOGLE_API_KEY):
     
     if r.status_code not in range(200, 299):
         
-        return "address not found", None, blank_popover()
+        return "address not found", None, blank_popover(), None
     try:
         '''
         This try block incase any of our inputs are invalid. This is done instead
@@ -33,13 +33,13 @@ def extract_lat_long_via_address(address_or_zipcode, GOOGLE_API_KEY):
         lat = results['geometry']['location']['lat']
         lng = results['geometry']['location']['lng']
     except:
-        return "address not found.", None, blank_popover()
+        return "address not found.", None, blank_popover(), None
         pass
 
     #districts = get_district(lat, lng)
     #county = get_county(lat, lon)
     #return get_district(lat, lng)
-    return "address found.",None, popover(lat,lng, address_or_zipcode)
+    return "address found at: (" + str(lat)+","+str(lng)+").  " ,None, popover(lat,lng, address_or_zipcode), get_district(lat,lng)
 
 
 def get_district(lat,lon):
@@ -72,11 +72,10 @@ def get_district(lat,lon):
     if len(results['district']) > 0:
         print("districts found")
         print(results['district'])
-        return_msg = "Your attitude and Longitude are: (" + str(lat) + ", " + str(lon) + "). "
-
-        return return_msg + "Your address is in Colorado Congressional " + results['district'][0] +  get_county(lat,lon)
+        
+        return "Your address is in Colorado Congressional " + results['district'][0] + ".  " 
     else:
-        return "District not found, please verify your address\n"    
+        return "Colorado district not found, please verify your address.  "    
 
 def get_county(lat,lon):
     print("lat/lon")
@@ -111,7 +110,7 @@ def get_county(lat,lon):
 
         return ".  You can register to vote in  " + results['county'][0] 
     else:
-        return "County not found.  Please verify the address above"    
+        return "County not found.  Please verify address."    
 
        
 

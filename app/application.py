@@ -115,7 +115,7 @@ def toggle_navbar_collapse(n, is_open):
 address = html.Div(
     [
         html.H3(
-            "Enter your address:  ", className="lead"
+            "Enter your address and press ENTER:  ", className="lead"
         ),
         dbc.Input(id="input", placeholder="ex: 17301 W Colfax Golden", size="md", className="mb-3", type="text",debounce=True),
 
@@ -180,11 +180,11 @@ def output_text(value):
 
     global modal
     
-    lat, lon, modal = extract_lat_long_via_address(value, GOOGLE_API_KEY)
+    lat, lon, modal, district = extract_lat_long_via_address(value, GOOGLE_API_KEY)
     
     #districts = extract_lat_long_via_address(value, GOOGLE_API_KEY)
     
-    return lat, lon, modal
+    return lat, lon, district, modal
 
 #callback for sidebar button
 @application.callback(
