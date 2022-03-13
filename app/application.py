@@ -11,6 +11,7 @@ from geocode import extract_lat_long_via_address, get_district
 from addressmapmodal import  blank_popover
 from content_style import CONTENT_STYLE, CONTENT_STYLE1
 from sidebar_style import SIDEBAR_HIDEN, SIDEBAR_STYLE
+from register import registration_div
 
 
 #GOOGLE_API_KEY = os.environ['GOOGLE_API_KEY'] = os.environ['GOOGLE_API_KEY']
@@ -29,7 +30,7 @@ maps = [os.path.splitext(map)[0] for map in maps]
 home_about = ['about']
 maps.remove('about')
 maps.sort()
-maps = maps + home_about
+maps = maps + ['register']+  home_about
 
 # create a dictionary of routing labels used in sidebar
 dict = {}
@@ -37,7 +38,7 @@ index =0
 for map in maps:
     dict[map] = map
 dict['about'] = "About"
-   
+dict['register'] = "Colorado Voter Information"
 dict['colorado_districtmap_1mar22'] = "Find Your District"
 
 application = dash.Dash(external_stylesheets=[dbc.themes.CERULEAN],prevent_initial_callbacks=True)
@@ -247,9 +248,10 @@ def render_page_content(pathname):
         return html.Div(
               html.Iframe(id="map", srcDoc= open(mymap,'r').read(), width='100%', height='600' )
         )
+    elif pathname in ["/register"]:
+         register = registration_div()
+         return register 
     elif pathname in ["/" + str(map) for map in maps]:
-
-
         mymap = "./app/static/" + pathname[1:] + ".html"
         return html.Div(
               html.Iframe(id="map", srcDoc= open(mymap,'r').read(), width='100%', height='600' )
