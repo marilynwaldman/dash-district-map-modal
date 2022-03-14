@@ -24,7 +24,7 @@ def make_map(lat,lon,address):
         center = {"lat": lat , "lon": lon}, # where map will be centered
         width = 500,  # Width of map
         height = 500,  # Height of map
-        zoom = 10,
+        zoom = 14,
         hover_data = ["address"],  # what to display when hovering mouse over coordinate
     )
 

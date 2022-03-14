@@ -39,7 +39,7 @@ for map in maps:
     dict[map] = map
 dict['about'] = "About"
 dict['register'] = "Colorado Voter Information"
-dict['colorado_districtmap_1mar22'] = "Find Your District"
+dict['colorado_districtmap_7mar22'] = "Find Your District"
 
 application = dash.Dash(external_stylesheets=[dbc.themes.CERULEAN],prevent_initial_callbacks=True)
 
@@ -242,9 +242,9 @@ def toggle_active_links(pathname):
 
 @application.callback(Output("page-content", "children"), [Input("url", "pathname")])
 def render_page_content(pathname):
-    if pathname in ["/","/colorado_districtmap_1mar22"]:
+    if pathname in ["/","/colorado_districtmap_7mar22"]:
         #return html.P("IX Power Maps")
-        mymap = "./app/static/colorado_districtmap_1mar22.html"
+        mymap = "./app/static/colorado_districtmap_7mar22.html"
         return html.Div(
               html.Iframe(id="map", srcDoc= open(mymap,'r').read(), width='100%', height='600' )
         )
